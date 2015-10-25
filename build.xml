@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="selfdef" default="release" basedir=".">
+<property name="src" value="src"/>
+<property name="lib" value="lib1"/>
+<property name="dst" value="classes"/>
+<property name="jar_file" value="myjar.jar"/>
+
+
+
+<target name="init">
+    <mkdir dir="${dst}" />
+</target>
+
+<target name="compile" depends="init">
+    <javac destdir="${dst}" includeantruntime="on">
+        <src path="${src}"/>
+        <exclude name="**/*_.java"/>
+        <classpath path="${lib}"/>
+    </javac>    
+</target>
+
+<target name="build" depends="compile">
+    <jar jarfile="${jar_file}" basedir="${dst}"/>
+</target>
+
+<target name="run" depends="build">
+    <java classname="com.zebrait.Test" classpath="${jar_file}"/>
+</target>
+
+<target name="clean">
+    <delete>
+        <fileset dir="${dst}">
+        <!--
+            <exclude name="**/*Task.class"/>
+            <exclude name="**/*Listener.class"/>
+        -->
+        </fileset>
+    </delete>
+    <delete file="${jar_file}"/>
+</target>
+
+<target name="test" depends="compile">
+    <taskdef name="aabb" classname="com.zebrait.TestTask" classpath="${dst}"/>
+    <aabb value="hello" path="/test/78/">
+        <fileset dir="${src}">
+        
+        </fileset>
+    </aabb>
+</target>
+</project>
